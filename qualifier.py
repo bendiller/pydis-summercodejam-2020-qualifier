@@ -33,9 +33,10 @@ class Article:
         self.title = title
         self.author = author
         self.publication_date = publication_date
-        self.content = content
+        self._content = content
         self.id = Article.next_id
         Article.next_id += 1
+        self.last_edited = None
 
     def __repr__(self):
         return f"<{type(self).__name__} " \
@@ -45,6 +46,15 @@ class Article:
 
     def __len__(self):
         return len(self.content)
+
+    @property
+    def content(self):
+        return self._content
+
+    @content.setter
+    def content(self, content):
+        self._content = content
+        self.last_edited = datetime.datetime.now()
 
     def short_introduction(self, n_characters):
         if len(self.content) <= n_characters:
