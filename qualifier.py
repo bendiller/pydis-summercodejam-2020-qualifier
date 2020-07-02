@@ -47,6 +47,9 @@ class Article:
     def __len__(self):
         return len(self.content)
 
+    def __lt__(self, other):
+        return self.publication_date < other.publication_date
+
     @property
     def content(self):
         return self._content
