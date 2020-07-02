@@ -27,12 +27,15 @@ class ArticleField:
 
 class Article:
     """The `Article` class you need to write for the qualifier."""
+    next_id = 0
 
     def __init__(self, title: str, author: str, publication_date: datetime.datetime, content: str):
         self.title = title
         self.author = author
         self.publication_date = publication_date
         self.content = content
+        self.id = Article.next_id
+        Article.next_id += 1
 
     def __repr__(self):
         return f"<{type(self).__name__} " \
