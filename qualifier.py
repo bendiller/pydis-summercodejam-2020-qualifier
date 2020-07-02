@@ -20,14 +20,32 @@ import typing
 
 class ArticleField:
     """The `ArticleField` class for the Advanced Requirements."""
-
+    # I've never used a descriptor before, this was useful to learn!
     def __init__(self, field_type: typing.Type[typing.Any]):
-        pass
+        self.field_type = field_type
+
+    def __set_name__(self, owner, name):
+        self.name = name
+
+    def __get__(self, obj, owner):
+        return obj.__dict__.get(self.name)
+
+    def __set__(self, obj, value):
+        if not isinstance(value, self.field_type):
+            raise TypeError(
+                f"Expected {self.field_type.__name__} for attribute {self.name}, got {type(value).__name__} instead"
+            )
+        else:
+            obj.__dict__[self.name] = value
 
 
 class Article:
     """The `Article` class you need to write for the qualifier."""
     next_id = 0
+    title = ArticleField(str)
+    author = ArticleField(str)
+    publication_date = ArticleField(datetime.datetime)
+    _content = ArticleField(str)
 
     def __init__(self, title: str, author: str, publication_date: datetime.datetime, content: str):
         self.title = title
